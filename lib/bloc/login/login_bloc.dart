@@ -5,7 +5,7 @@ import 'package:diplomski_rad_user_module/model/authentication_data.dart';
 import 'package:diplomski_rad_user_module/network/rest.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc(super.initialState);
+  LoginBloc() : super(LoginInitial());
 
   @override
   LoginState get initialState => LoginInitial();
