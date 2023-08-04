@@ -5,16 +5,22 @@ import 'package:diplomski_rad_user_module/model/authentication_data.dart';
 import 'package:diplomski_rad_user_module/network/rest.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial());
-
-  @override
-  Stream<LoginState> onEvent(LoginEvent event) async* {
-    super.onEvent(event);
-    if(event is OnLoginButtonPressed) {
-      yield LoginLoading();
-    } else {
-      yield LoginFailure();
-    }
+  LoginBloc() : super(LoginInitial()) {
+    on<OnLoginButtonPressed>(_onLoginButtonPressed);
   }
 
+  Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<LoginState> emit) async {
+    emit(LoginLoading());
+    try {
+        emit(LoginSuccess(data: AuthenticationData(jwtToken: "jwtToken", timestamp: "timestamp")));
+        emit(LoginFailure());
+    } catch (e) {
+      emit(LoginFailure());
+    }
+  }
 }
+
+
+
+
+
