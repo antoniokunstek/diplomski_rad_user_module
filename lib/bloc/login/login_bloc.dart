@@ -8,18 +8,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial());
 
   @override
-  LoginState get initialState => LoginInitial();
-
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is OnLoginButtonPressed) {
+  Stream<LoginState> onEvent(LoginEvent event) async* {
+    super.onEvent(event);
+    if(event is OnLoginButtonPressed) {
       yield LoginLoading();
-      try {
-        AuthenticationData authData = await fetchUser(event.formModel);
-        yield LoginSuccess(data: authData);
-      } catch (e) {
-        yield LoginFailure();
-      }
+    } else {
+      yield LoginFailure();
     }
   }
+
 }
