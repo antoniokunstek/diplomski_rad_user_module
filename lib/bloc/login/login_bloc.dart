@@ -12,8 +12,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     try {
-        emit(LoginSuccess(data: AuthenticationData(jwtToken: "jwtToken", timestamp: "timestamp")));
-        emit(LoginFailure());
+        AuthenticationData authData = await fetchUser(event.formModel);
+        emit(LoginSuccess(data: authData));
     } catch (e) {
       emit(LoginFailure());
     }
