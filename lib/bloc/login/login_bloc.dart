@@ -15,6 +15,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         AuthenticationData authData = await fetchUser(event.formModel);
         emit(LoginSuccess(data: authData));
     } catch (e) {
+      print(e);
       emit(LoginFailure());
     }
   }
