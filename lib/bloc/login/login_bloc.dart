@@ -12,12 +12,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     try {
-        print("HERE");
-        print(event.formModel.email);
         AuthenticationData authData = await fetchUser(event.formModel);
         emit(LoginSuccess(data: authData));
     } catch (e) {
-      print("Error $e");
       emit(LoginFailure());
     }
   }

@@ -8,7 +8,7 @@ import 'package:diplomski_rad_user_module/network/http_status.dart';
 import 'package:http/http.dart' as http;
 
 Future<AuthenticationData> fetchUser(LoginFormModel model) async {
-  http.Response res = await http.post(Uri.parse('http://localhost:9999/api/v1/auth/authenticate'),
+  http.Response res = await http.post(Uri.parse('http://10.0.2.2:9999/api/v1/auth/authenticate'),
           headers: <String, String> {
             'Content-type': 'application/json; charset=UTF-8',
       },
