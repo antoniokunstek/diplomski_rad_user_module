@@ -16,6 +16,7 @@ Future<AuthenticationData> fetchUser(LoginFormModel model) async {
     );
 
     if(res.statusCode == HttpStatus.OK.status) {
+      print("HERE - 200");
       Response res2 = Response.fromJson(jsonDecode(res.body));
       if(res2.successful) {
         return AuthenticationData.fromJson(res2.data);
@@ -23,6 +24,7 @@ Future<AuthenticationData> fetchUser(LoginFormModel model) async {
         throw AuthenticationException(message: 'Auth exception');
       }
     } else {
+      print("HERE - error");
       throw AuthenticationException(message: 'Authentication exception');
     }
 }
