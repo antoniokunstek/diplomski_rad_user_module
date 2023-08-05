@@ -1,5 +1,3 @@
-import 'package:diplomski_rad_user_module/model/authentication_data.dart';
-
 class Response {
   String timestamp;
   int status;
