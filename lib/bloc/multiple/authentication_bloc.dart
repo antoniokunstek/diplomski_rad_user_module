@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import '../login/authentication_event.dart';
 import '../login/authentication_state.dart';
 
-abstract class IAuthenticationBloc  {
+abstract class IAuthenticationBloc implements StateStreamableSource<AuthenticationState>  {
   Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit);
   Future<void> _onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit);
 }
