@@ -13,6 +13,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   bloc: ^8.1.1
   http: ^1.1.0
+  google_sign_in: ^6.1.4
 
 #  diplomski_rad_assets_module:
 #    git:
