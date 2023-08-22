@@ -25,6 +25,11 @@ class GoogleAuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationS
 
   @override
   Future<void> onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit) async {
+    try {
+      GoogleSignInAccount? account = await google.signIn();
+    } catch (e) {
+      print(e);
+    }
     GoogleSignInAccount? account = await google.signIn();
     if(account == null) {
       emit(AuthenticationFailure());
