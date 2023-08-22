@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:diplomski_rad_user_module/exceptions/authentication_exception.dart';
 import 'package:diplomski_rad_user_module/model/authentication_data.dart';
 import 'package:diplomski_rad_user_module/model/login_form.dart';
 import 'package:diplomski_rad_user_module/model/register_form.dart';
@@ -27,39 +28,33 @@ class GoogleAuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationS
   Future<void> onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit) async {
     try {
       GoogleSignInAccount? account = await google.signIn();
+      if(account == null) {
+        throw AuthenticationException(message: "Google auth failed");
+      }
+      print(account.email);
+      LoginFormModel formModel = LoginFormModel(email: account.email, password: "password");
+      AuthenticationData authData = await fetchUser(formModel);
+      emit(AuthenticationSuccess(data: authData));
     } catch (e) {
       print(e);
-    }
-    GoogleSignInAccount? account = await google.signIn();
-    if(account == null) {
       emit(AuthenticationFailure());
-    } else {
-      try {
-        LoginFormModel formModel = LoginFormModel(email: account.email, password: "password");
-        AuthenticationData authData = await fetchUser(formModel);
-        emit(AuthenticationSuccess(data: authData));
-      } catch(e) {
-        print(e);
-        emit(AuthenticationFailure());
-      }
     }
   }
 
   @override
   Future<void> onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit) async {
-    GoogleSignInAccount? account = await google.signIn();
-    if(account == null) {
-      emit(AuthenticationFailure());
-    } else {
-      try {
-        RegisterFormModel formModel = RegisterFormModel(name: "Google", surname: "User", email: account.email, password: "password");
-        AuthenticationData authData = await registerUser(formModel);
-        emit(AuthenticationSuccess(data: authData));
-      } catch(e) {
-        print(e);
-        emit(AuthenticationFailure());
-      }
-    }
+   try {
+     GoogleSignInAccount? account = await google.signIn();
+     if(account == null) {
+       throw new AuthenticationException(message: "Google auth failed");
+     }
+       RegisterFormModel formModel = RegisterFormModel(name: "Google", surname: "User", email: account.email, password: "password");
+       AuthenticationData authData = await registerUser(formModel);
+       emit(AuthenticationSuccess(data: authData));
+   } catch (e) {
+     print(e);
+     emit(AuthenticationFailure());
+   }
   }
 }
 
