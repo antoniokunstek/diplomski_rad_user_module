@@ -16,9 +16,7 @@ abstract class IAuthenticationBloc implements StateStreamableSource<Authenticati
 
 
 class GoogleAuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> implements IAuthenticationBloc {
-  GoogleSignIn google = GoogleSignIn(
-    serverClientId: "184708501539-0j5tu87e955tcmhmnkd3ppv2v4j4mqqs.apps.googleusercontent.com"
-  );
+  GoogleSignIn google = GoogleSignIn();
   GoogleAuthenticationBloc(): super(AuthenticationInitial()) {
     on<OnLoginButtonPressed>(onLoginButtonPressed);
     on<OnRegisterButtonPressed>(onRegisterButtonPressed);
