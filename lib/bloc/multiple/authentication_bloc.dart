@@ -9,20 +9,20 @@ import '../login/authentication_event.dart';
 import '../login/authentication_state.dart';
 
 abstract class IAuthenticationBloc implements StateStreamableSource<AuthenticationState>  {
-  Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit);
-  Future<void> _onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit);
+  Future<void> onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit);
+  Future<void> onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit);
 }
 
 
 class GoogleAuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> implements IAuthenticationBloc {
   GoogleSignIn google = GoogleSignIn();
   GoogleAuthenticationBloc(): super(AuthenticationInitial()) {
-    on<OnLoginButtonPressed>(_onLoginButtonPressed);
-    on<OnRegisterButtonPressed>(_onRegisterButtonPressed);
+    on<OnLoginButtonPressed>(onLoginButtonPressed);
+    on<OnRegisterButtonPressed>(onRegisterButtonPressed);
   }
 
   @override
-  Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit) async {
+  Future<void> onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit) async {
     GoogleSignInAccount? account = await google.signIn();
     if(account == null) {
       emit(AuthenticationFailure());
@@ -39,7 +39,7 @@ class GoogleAuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationS
   }
 
   @override
-  Future<void> _onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit) async {
+  Future<void> onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit) async {
     GoogleSignInAccount? account = await google.signIn();
     if(account == null) {
       emit(AuthenticationFailure());
@@ -58,11 +58,11 @@ class GoogleAuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationS
 
 class RestAPIAuthentication extends Bloc<AuthenticationEvent, AuthenticationState> implements IAuthenticationBloc {
   RestAPIAuthentication(): super(AuthenticationInitial()) {
-    on<OnLoginButtonPressed>(_onLoginButtonPressed);
-    on<OnRegisterButtonPressed>(_onRegisterButtonPressed);
+    on<OnLoginButtonPressed>(onLoginButtonPressed);
+    on<OnRegisterButtonPressed>(onRegisterButtonPressed);
   }
   @override
-  Future<void> _onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit) async {
+  Future<void> onLoginButtonPressed(OnLoginButtonPressed event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationProcessRequest());
     try {
       AuthenticationData authData = await fetchUser(event.formModel);
@@ -74,7 +74,7 @@ class RestAPIAuthentication extends Bloc<AuthenticationEvent, AuthenticationStat
   }
 
   @override
-  Future<void> _onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit) async {
+  Future<void> onRegisterButtonPressed(OnRegisterButtonPressed event, Emitter<AuthenticationState> emit) async {
     emit(AuthenticationProcessRequest());
     try {
       AuthenticationData authenticationData = await registerUser(event.registerModel);
